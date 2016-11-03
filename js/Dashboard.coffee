@@ -1,8 +1,12 @@
 class Dashboard extends Class
 	constructor: ->
+		@menu_newversion = new Menu()
 		@menu_tor = new Menu()
 		@menu_port = new Menu()
 		@menu_multiuser = new Menu()
+		@menu_donate = new Menu()
+		@menu_browserwarning = new Menu()
+
 		@port_checking = false
 
 	isTorAlways: ->
@@ -17,6 +21,7 @@ class Dashboard extends Class
 		@menu_tor.items.push ["Status: #{Page.server_info?.tor_status}", "http://zeronet.readthedocs.org/en/latest/faq/#how-to-make-zeronet-work-with-tor-under-linux"]
 		if @getTorTitle() != "OK"
 			@menu_tor.items.push ["How to make Tor connection work?", "http://zeronet.readthedocs.org/en/latest/faq/#how-to-make-zeronet-work-with-tor-under-linux"]
+		@menu_tor.items.push ["How to use ZeroNet in Tor Browser?", "http://zeronet.readthedocs.org/en/latest/faq/#how-to-use-zeronet-in-tor-browser"]
 		if @getTorTitle() == "OK"
 			@menu_tor.items.push ["---"]
 			if @isTorAlways()
@@ -66,13 +71,52 @@ class Dashboard extends Class
 		@menu_multiuser.toggle()
 		return false
 
+	handleDonateClick: =>
+		@menu_donate.items = []
+		@menu_donate.items.push ["Help to keep this project alive", "https://zeronet.readthedocs.org/en/latest/help_zeronet/donate/"]
+
+		@menu_donate.toggle()
+		return false
+
 	handleLogoutClick: =>
 		Page.cmd "uiLogout"
+
+	handleNewversionClick: =>
+		@menu_newversion.items = []
+		@menu_newversion.items.push ["Update and restart ZeroNet", ( ->
+			Page.cmd "wrapperNotification", ["info", "Updating to latest version...<br>Please restart ZeroNet manually if it does not come back in the next few minutes.", 8000]
+			Page.cmd "serverUpdate"
+		)]
+
+		@menu_newversion.toggle()
+		return false
+
+	handleBrowserwarningClick: =>
+		@menu_browserwarning.items = []
+		@menu_browserwarning.items.push ["Internet Explorer is not fully supported browser by ZeroNet, please consider switching to Chrome or Firefox", "http://browsehappy.com/"]
+		@menu_browserwarning.toggle()
+		return false
 
 	render: =>
 		if Page.server_info
 			tor_title = @getTorTitle()
 			h("div#Dashboard",
+				# IE not supported
+				if navigator.userAgent.match /(\b(MS)?IE\s+|Trident\/7.0)/
+					h("a.port.dashboard-item.browserwarning", {href: "http://browsehappy.com/", onmousedown: @handleBrowserwarningClick, onclick: Page.returnFalse}, [
+						h("span", "Unsupported browser")
+					])
+				@menu_browserwarning.render(".menu-browserwarning")
+
+				# Update
+				if parseFloat(Page.server_info.version.replace(".", "0")) < parseFloat(Page.latest_version.replace(".", "0"))
+					h("a.newversion.dashboard-item", {href: "#Update", onmousedown: @handleNewversionClick, onclick: Page.returnFalse}, "New ZeroNet version: #{Page.latest_version}")
+				@menu_newversion.render(".menu-newversion")
+
+				# Donate
+				h("a.port.dashboard-item.donate", {"href": "#Donate", onmousedown: @handleDonateClick, onclick: Page.returnFalse}, [h("div.icon-heart")]),
+				@menu_donate.render(".menu-donate")
+
 				# Multiuser
 				if Page.server_info.multiuser
 					h("a.port.dashboard-item.multiuser", {href: "#Multiuser", onmousedown: @handleMultiuserClick, onclick: Page.returnFalse}, [
@@ -114,7 +158,7 @@ class Dashboard extends Class
 						if @isTorAlways()
 							h("span.status.status-ok", "Always")
 						else
-							h("span.status.status-ok", tor_title)
+							h("span.status.status-ok", "Available")
 					else
 						h("span.status.status-warning", tor_title)
 				]),

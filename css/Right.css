@@ -8,6 +8,7 @@
 	text-decoration: none; margin: 5px; padding: 10px 20px; border-radius: 40px; display: inline-block;
 	color: rgba(45, 47, 62, 0.72); text-transform: uppercase; font-size: 13px; font-weight: bold; background-color: white;
 }
+#Dashboard .dashboard-item:active { transform: translateY(1px); }
 #Dashboard .dashboard-item .status-ok { color: #2ecc71; }
 #Dashboard .dashboard-item .status-warning { color: #E7A43C; }
 #Dashboard .dashboard-item .status-bad { color: #e74c3c; }
@@ -16,18 +17,32 @@
 #Dashboard .menu { top: 47px }
 #Dashboard .menu-tor .menu-item { white-space: nowrap; }
 #Dashboard .menu-port .menu-item { white-space: nowrap; }
+#Dashboard .menu-donate .menu-item { white-space: nowrap; }
+#Dashboard .dashboard-item.newversion { background-color: #35CD76; color: white; }
+#Dashboard .dashboard-item.donate { height: 18px; vertical-align: top; padding: 10px 19px; }
+#Dashboard .dashboard-item.donate:hover .icon-heart { transform: scale(1.2) }
+#Dashboard .dashboard-item.donate:hover .icon-heart:before, #Dashboard .dashboard-item.donate:hover .icon-heart:after { background-color: #FA6C8D }
 /*#Dash .port_checking .status:after {
 	background: transparent url(../img/loading-circle.gif) no-repeat center center; backface-visibility: hidden; content: "";
 	display: inline-block; background-color: rgb(45, 47, 62); width: 25px; height: 25px; border-radius: 60px; position: absolute; margin-left: -32px; margin-top: -2px;
 }*/
 
-
+.FeedContainer a:active { background-color: rgba(0,0,0,0.05); outline: 2px solid rgba(0,0,0,0.05) }
+.feeds-search { max-width: 820px; box-sizing: border-box; padding-left: 190px; margin-top: 30px; position: relative; margin-right: 50px }
+.feeds-search input { padding: 10px; padding-left: 35px; border: 1px solid #eee; width: 100%; font-family: Roboto; font-size: 16px; font-weight: 100; line-height: 20px; transition: all 0.3s; border-radius: 30px }
+.feeds-search input::-ms-clear { display: none }
+.feeds-search input:focus { outline: none; border-color: #A468F4; }
+.search-noresult { text-align: center; margin: 100px 50px; font-family: Roboto; font-weight: 100; font-size: 18px; }
+.search-info { right: -29px; color: #AAA; position: absolute; font-size: 13px; margin-top: -28px; }
 .feeds-line { position: absolute; border-right: 1px solid #eee; height: 100%; left: 174px; top: 0px }
+/*.loader { background: url("../img/loading-ring.gif") no-repeat; width: 28px; height: 28px; position: absolute; right: -30px; top: -30px }*/
 .FeedList { margin-top: 50px; position: relative; max-width: 820px; overflow: hidden }
+.FeedList.loading { opacity: 0.5; transition: all 1s ease-out }
 .FeedList .feed { display: block; padding: 15px; margin-bottom: 40px; padding-left: 200px }
 .FeedList .feed a { text-decoration: none }
 .FeedList .feed a:hover { text-decoration: underline }
-.FeedList .feed .type { color: #999 }
+.FeedList .feed .type { color: #999; margin-right: 5px }
+.FeedList .feed.mention .type { background-color: #fffcdd; outline: 2px solid #fffcdd }
 .FeedList .feed .more {
 	text-align: center; font-size: 80%; color: #26c281; background: linear-gradient(#EFEFEF 0%, #FFF 10%);
 	border-top: 1px solid #E4E4E4; display: block; padding: 10px; margin-top: 10px;
@@ -47,7 +62,7 @@
 }
 .FeedList .feed .body b { color: #666 }
 /*.FeedList .feed .body:before { content:''; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: linear-gradient(transparent 46px, transparent 0px, white 94%) }*/
-
+.highlight { background-color: #F5E6D4; outline: 2px solid #F5E6D4; }
 
 .welcome { text-align: center; margin-top: 50px; max-width: 1170px }
 .welcome h1 {
@@ -76,8 +91,9 @@
 }
 .welcome .site-zeroboard { background: radial-gradient(circle at 2.00% -2.01%, hsla(152,31%,51%,1), transparent 100%),radial-gradient(circle at 98.00% 50.04%, hsla(188,44%,51%,1), transparent 100%); }
 .welcome .site-zeroblog { background: linear-gradient(-45deg, #358AC7, #A176B6); }
-.welcome .site-zerotalk { background: linear-gradient(-45deg, #FFB78C, #E66690); }
+.welcome .site-zerotalk { background: linear-gradient(45deg, #9F63BF, #E2556F) }
 .welcome .site-zeromail { background: linear-gradient(-25deg, #C04848 -40%, #4A569D) }
+.welcome .site-zerome { background: linear-gradient(-45deg, #F39963, #F7417D) }
 
 @media only screen and (max-width: 1250px) {
 	.welcome .site { width: 49%; }

@@ -26,10 +26,11 @@ class Menu
 	storeNode: (node) =>
 		@node = node
 		# Animate visible
-		node.className = node.className.replace("visible", "")
-		setTimeout (->
-			node.className += " visible"
-		), 10
+		if @visible
+			node.className = node.className.replace("visible", "")
+			setTimeout (->
+				node.className += " visible"
+			), 10
 
 	handleClick: (e) =>
 		keep_menu = false
@@ -51,7 +52,7 @@ class Menu
 			else  # Callback
 				href = "#"+title
 				onclick = @handleClick
-			h("a.menu-item", {href: href, onclick: onclick, target: "_blank", key: title, classes: {"selected": selected}}, [title])
+			h("a.menu-item", {href: href, onclick: onclick, key: title, classes: {"selected": selected}}, [title])
 
 	render: (class_name="") =>
 		if @visible or @node
